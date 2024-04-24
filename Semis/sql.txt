@@ -1,0 +1,227 @@
+USE [master]
+GO
+/****** Object:  Database [employeedb]    Script Date: 24/04/2024 6:38:21 pm ******/
+CREATE DATABASE [employeedb]
+
+
+
+/*************************/
+use [employeedb]
+ALTER DATABASE [employeedb] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [employeedb].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [employeedb] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [employeedb] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [employeedb] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [employeedb] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [employeedb] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [employeedb] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [employeedb] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [employeedb] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [employeedb] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [employeedb] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [employeedb] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [employeedb] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [employeedb] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [employeedb] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [employeedb] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [employeedb] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [employeedb] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [employeedb] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [employeedb] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [employeedb] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [employeedb] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [employeedb] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [employeedb] SET RECOVERY FULL 
+GO
+ALTER DATABASE [employeedb] SET  MULTI_USER 
+GO
+ALTER DATABASE [employeedb] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [employeedb] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [employeedb] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [employeedb] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [employeedb] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [employeedb] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'employeedb', N'ON'
+GO
+ALTER DATABASE [employeedb] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [employeedb] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [employeedb]
+GO
+/****** Object:  Table [dbo].[Departments]    Script Date: 24/04/2024 6:38:22 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Departments](
+	[DepartmentID] [int] NOT NULL,
+	[DepartmentName] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[DepartmentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EmployeeDepartmentHistory]    Script Date: 24/04/2024 6:38:22 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EmployeeDepartmentHistory](
+	[HistoryID] [int] NOT NULL,
+	[EmployeeID] [int] NULL,
+	[DepartmentID] [int] NULL,
+	[StartDate] [date] NULL,
+	[EndDate] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[HistoryID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Employees]    Script Date: 24/04/2024 6:38:22 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Employees](
+	[EmployeeID] [int] NOT NULL,
+	[FirstName] [varchar](50) NULL,
+	[LastName] [varchar](50) NULL,
+	[DateOfBirth] [date] NULL,
+	[Gender] [varchar](10) NULL,
+	[DepartmentID] [int] NULL,
+	[PositionID] [int] NULL,
+	[HireDate] [date] NULL,
+	[Salary] [decimal](10, 2) NULL,
+	[Email] [varchar](100) NULL,
+	[Phone] [varchar](20) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[EmployeeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Positions]    Script Date: 24/04/2024 6:38:22 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Positions](
+	[PositionID] [int] NOT NULL,
+	[PositionTitle] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[PositionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Salaries]    Script Date: 24/04/2024 6:38:22 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Salaries](
+	[SalaryID] [int] NOT NULL,
+	[EmployeeID] [int] NULL,
+	[SalaryAmount] [decimal](10, 2) NULL,
+	[EffectiveDate] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[SalaryID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[Departments] ([DepartmentID], [DepartmentName]) VALUES (1, N'Human Resources')
+GO
+INSERT [dbo].[Departments] ([DepartmentID], [DepartmentName]) VALUES (2, N'Marketing')
+GO
+INSERT [dbo].[Departments] ([DepartmentID], [DepartmentName]) VALUES (3, N'Engineering')
+GO
+INSERT [dbo].[Departments] ([DepartmentID], [DepartmentName]) VALUES (4, N'Finance')
+GO
+INSERT [dbo].[EmployeeDepartmentHistory] ([HistoryID], [EmployeeID], [DepartmentID], [StartDate], [EndDate]) VALUES (1, 1, 1, CAST(N'2010-01-15' AS Date), NULL)
+GO
+INSERT [dbo].[EmployeeDepartmentHistory] ([HistoryID], [EmployeeID], [DepartmentID], [StartDate], [EndDate]) VALUES (2, 2, 2, CAST(N'2012-03-20' AS Date), NULL)
+GO
+INSERT [dbo].[EmployeeDepartmentHistory] ([HistoryID], [EmployeeID], [DepartmentID], [StartDate], [EndDate]) VALUES (3, 3, 3, CAST(N'2015-06-10' AS Date), NULL)
+GO
+INSERT [dbo].[EmployeeDepartmentHistory] ([HistoryID], [EmployeeID], [DepartmentID], [StartDate], [EndDate]) VALUES (4, 4, 4, CAST(N'2018-09-05' AS Date), NULL)
+GO
+INSERT [dbo].[Employees] ([EmployeeID], [FirstName], [LastName], [DateOfBirth], [Gender], [DepartmentID], [PositionID], [HireDate], [Salary], [Email], [Phone]) VALUES (1, N'John', N'Doe', CAST(N'1985-05-10' AS Date), N'Male', 1, 1, CAST(N'2010-01-15' AS Date), CAST(60000.00 AS Decimal(10, 2)), N'john.doe@example.com', N'123-456-7890')
+GO
+INSERT [dbo].[Employees] ([EmployeeID], [FirstName], [LastName], [DateOfBirth], [Gender], [DepartmentID], [PositionID], [HireDate], [Salary], [Email], [Phone]) VALUES (2, N'Jane', N'Smith', CAST(N'1990-08-20' AS Date), N'Female', 2, 2, CAST(N'2012-03-20' AS Date), CAST(55000.00 AS Decimal(10, 2)), N'jane.smith@example.com', N'234-567-8901')
+GO
+INSERT [dbo].[Employees] ([EmployeeID], [FirstName], [LastName], [DateOfBirth], [Gender], [DepartmentID], [PositionID], [HireDate], [Salary], [Email], [Phone]) VALUES (3, N'Michael', N'Johnson', CAST(N'1988-12-15' AS Date), N'Male', 3, 3, CAST(N'2015-06-10' AS Date), CAST(70000.00 AS Decimal(10, 2)), N'michael.johnson@example.com', N'345-678-9012')
+GO
+INSERT [dbo].[Employees] ([EmployeeID], [FirstName], [LastName], [DateOfBirth], [Gender], [DepartmentID], [PositionID], [HireDate], [Salary], [Email], [Phone]) VALUES (4, N'Emily', N'Williams', CAST(N'1995-04-05' AS Date), N'Female', 4, 4, CAST(N'2018-09-05' AS Date), CAST(65000.00 AS Decimal(10, 2)), N'emily.williams@example.com', N'456-789-0123')
+GO
+INSERT [dbo].[Positions] ([PositionID], [PositionTitle]) VALUES (1, N'HR Manager')
+GO
+INSERT [dbo].[Positions] ([PositionID], [PositionTitle]) VALUES (2, N'Marketing Specialist')
+GO
+INSERT [dbo].[Positions] ([PositionID], [PositionTitle]) VALUES (3, N'Software Engineer')
+GO
+INSERT [dbo].[Positions] ([PositionID], [PositionTitle]) VALUES (4, N'Financial Analyst')
+GO
+INSERT [dbo].[Salaries] ([SalaryID], [EmployeeID], [SalaryAmount], [EffectiveDate]) VALUES (1, 1, CAST(60000.00 AS Decimal(10, 2)), CAST(N'2010-01-15' AS Date))
+GO
+INSERT [dbo].[Salaries] ([SalaryID], [EmployeeID], [SalaryAmount], [EffectiveDate]) VALUES (2, 2, CAST(55000.00 AS Decimal(10, 2)), CAST(N'2012-03-20' AS Date))
+GO
+INSERT [dbo].[Salaries] ([SalaryID], [EmployeeID], [SalaryAmount], [EffectiveDate]) VALUES (3, 3, CAST(70000.00 AS Decimal(10, 2)), CAST(N'2015-06-10' AS Date))
+GO
+INSERT [dbo].[Salaries] ([SalaryID], [EmployeeID], [SalaryAmount], [EffectiveDate]) VALUES (4, 4, CAST(65000.00 AS Decimal(10, 2)), CAST(N'2018-09-05' AS Date))
+GO
+ALTER TABLE [dbo].[EmployeeDepartmentHistory]  WITH CHECK ADD FOREIGN KEY([DepartmentID])
+REFERENCES [dbo].[Departments] ([DepartmentID])
+GO
+ALTER TABLE [dbo].[EmployeeDepartmentHistory]  WITH CHECK ADD FOREIGN KEY([EmployeeID])
+REFERENCES [dbo].[Employees] ([EmployeeID])
+GO
+ALTER TABLE [dbo].[Employees]  WITH CHECK ADD FOREIGN KEY([DepartmentID])
+REFERENCES [dbo].[Departments] ([DepartmentID])
+GO
+ALTER TABLE [dbo].[Employees]  WITH CHECK ADD FOREIGN KEY([PositionID])
+REFERENCES [dbo].[Positions] ([PositionID])
+GO
+ALTER TABLE [dbo].[Salaries]  WITH CHECK ADD FOREIGN KEY([EmployeeID])
+REFERENCES [dbo].[Employees] ([EmployeeID])
+GO
+USE [master]
+GO
+ALTER DATABASE [employeedb] SET  READ_WRITE 
+GO
